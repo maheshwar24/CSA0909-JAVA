@@ -1,0 +1,3 @@
+package TaskB3;
+import Task05.Db; import java.sql.*; import java.util.*;
+public class Benchmark { public static void main(String[] a)throws Exception{int n=a.length==0?1000:Integer.parseInt(a[0]);List<String[]> rows=new ArrayList<>();for(int i=0;i<n;i++)rows.add(new String[]{"P"+UUID.randomUUID().toString().substring(0,12),"REG"+i,"Student"+i,Integer.toString(i%20+1),"3500.00"});try(Connection c=Db.connect()){long t=System.nanoTime();int loaded=PassLoader.loadAll(c,rows);System.out.printf("Loaded %d rows in %.3f ms%n",loaded,(System.nanoTime()-t)/1e6);DatabaseMetaData m=c.getMetaData();System.out.println(m.getDatabaseProductName()+" / "+m.getDriverVersion());}} }

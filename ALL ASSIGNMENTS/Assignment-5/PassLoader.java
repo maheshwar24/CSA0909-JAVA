@@ -1,0 +1,3 @@
+package TaskB3;
+import java.sql.*; import java.util.*;
+public class PassLoader { public static int loadAll(Connection c,List<String[]> rows)throws SQLException{String sql="INSERT INTO bus_pass(pass_id,reg_no,name,route_no,amount) VALUES(?,?,?,?,?)";boolean old=c.getAutoCommit();c.setAutoCommit(false);int count=0;try(PreparedStatement p=c.prepareStatement(sql)){for(String[] r:rows){p.setString(1,r[0]);p.setString(2,r[1]);p.setString(3,r[2]);p.setInt(4,Integer.parseInt(r[3]));p.setDouble(5,Double.parseDouble(r[4]));p.addBatch();count++;if(count%1000==0)p.executeBatch();}p.executeBatch();c.commit();return count;}catch(SQLException|RuntimeException e){c.rollback();throw e;}finally{c.setAutoCommit(old);}} }
